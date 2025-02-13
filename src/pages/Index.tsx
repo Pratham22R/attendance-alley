@@ -1,7 +1,7 @@
-
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { GraduationCap, ChartBar, Users, Clock, ArrowRight, Github, Mail, Phone } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const features = [
   {
@@ -34,6 +34,7 @@ const NavLink = ({ children }: { children: React.ReactNode }) => (
 
 const Index = () => {
   const [isHovered, setIsHovered] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -80,7 +81,10 @@ const Index = () => {
               Save time, reduce errors, and focus on what matters most - education.
             </p>
             <div className="mt-10 flex items-center justify-center gap-4">
-              <button className="button-primary flex items-center gap-2 group">
+              <button 
+                className="button-primary flex items-center gap-2 group"
+                onClick={() => navigate('/dashboard')}
+              >
                 Get Started
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
