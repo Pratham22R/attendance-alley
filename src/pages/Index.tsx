@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { GraduationCap, ChartBar, Users, Clock, ArrowRight, Github, Mail, Phone } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { AuthForm } from '@/components/AuthForm';
+import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 
 const features = [
@@ -29,14 +29,19 @@ const features = [
   }
 ];
 
-const NavLink = ({ children }: { children: React.ReactNode }) => (
-  <a href="#" className="text-neutral-600 hover:text-primary transition-colors duration-200">
-    {children}
-  </a>
-);
+const NavLink = ({ children, to }: { children: React.ReactNode, to: string }) => {
+  const navigate = useNavigate();
+  return (
+    <button 
+      onClick={() => navigate(to)} 
+      className="text-neutral-600 hover:text-primary transition-colors duration-200"
+    >
+      {children}
+    </button>
+  );
+};
 
 const Index = () => {
-  const [isHovered, setIsHovered] = useState(false);
   const navigate = useNavigate();
   const { user } = useAuth();
 
@@ -56,41 +61,47 @@ const Index = () => {
               <span className="font-bold text-xl">AttendanceAlley</span>
             </div>
             <div className="hidden md:flex items-center gap-8">
-              <NavLink>Home</NavLink>
-              <NavLink>Features</NavLink>
-              <NavLink>Pricing</NavLink>
-              <NavLink>Contact</NavLink>
+              <NavLink to="/">Home</NavLink>
+              <NavLink to="/plans">Pricing</NavLink>
+              <Button 
+                onClick={() => navigate('/auth')} 
+                variant="outline" 
+                className="ml-4"
+              >
+                Sign In
+              </Button>
             </div>
           </div>
         </div>
       </nav>
 
       {/* Main Content */}
-      <main className="flex-grow grid lg:grid-cols-2 gap-12 container mx-auto px-4 py-12">
-        <div className="flex items-center">
-          <div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="max-w-xl"
-            >
-              <span className="bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium">
-                Attendance Made Simple
-              </span>
-              <h1 className="mt-8 text-5xl font-bold leading-tight">
-                Modern Student Attendance Management System
-              </h1>
-              <p className="mt-6 text-lg text-neutral-600">
-                Streamline your attendance tracking process with our intuitive and powerful management system.
-                Save time, reduce errors, and focus on what matters most - education.
-              </p>
-            </motion.div>
-          </div>
-        </div>
-
-        <div className="flex items-center justify-center">
-          <AuthForm />
+      <main className="flex-grow container mx-auto px-4 py-12">
+        <div className="max-w-3xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <span className="bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium">
+              Attendance Made Simple
+            </span>
+            <h1 className="mt-8 text-5xl font-bold leading-tight">
+              Modern Student Attendance Management System
+            </h1>
+            <p className="mt-6 text-lg text-neutral-600">
+              Streamline your attendance tracking process with our intuitive and powerful management system.
+              Save time, reduce errors, and focus on what matters most - education.
+            </p>
+            <div className="mt-8 flex items-center justify-center gap-4">
+              <Button onClick={() => navigate('/auth')} size="lg">
+                Get Started
+              </Button>
+              <Button onClick={() => navigate('/plans')} variant="outline" size="lg">
+                View Pricing
+              </Button>
+            </div>
+          </motion.div>
         </div>
       </main>
 
@@ -140,19 +151,15 @@ const Index = () => {
             <div>
               <h4 className="font-semibold mb-4">Product</h4>
               <ul className="space-y-2">
-                <li><NavLink>Features</NavLink></li>
-                <li><NavLink>Pricing</NavLink></li>
-                <li><NavLink>Integration</NavLink></li>
-                <li><NavLink>Documentation</NavLink></li>
+                <li><NavLink to="/plans">Pricing</NavLink></li>
+                <li><NavLink to="/auth">Get Started</NavLink></li>
               </ul>
             </div>
             <div>
               <h4 className="font-semibold mb-4">Company</h4>
               <ul className="space-y-2">
-                <li><NavLink>About Us</NavLink></li>
-                <li><NavLink>Careers</NavLink></li>
-                <li><NavLink>Blog</NavLink></li>
-                <li><NavLink>Legal</NavLink></li>
+                <li><NavLink to="/">About Us</NavLink></li>
+                <li><NavLink to="/">Home</NavLink></li>
               </ul>
             </div>
             <div>
@@ -160,15 +167,15 @@ const Index = () => {
               <ul className="space-y-2">
                 <li className="flex items-center gap-2">
                   <Mail className="w-4 h-4" />
-                  <NavLink>support@attendancealley.com</NavLink>
+                  <span>support@attendancealley.com</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Phone className="w-4 h-4" />
-                  <NavLink>+1 (555) 123-4567</NavLink>
+                  <span>+1 (555) 123-4567</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Github className="w-4 h-4" />
-                  <NavLink>Github</NavLink>
+                  <span>Github</span>
                 </li>
               </ul>
             </div>

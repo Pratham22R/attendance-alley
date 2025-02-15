@@ -1,3 +1,4 @@
+
 import { Check } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -47,7 +48,7 @@ const Plans = () => {
 
   const handlePlanSelect = (plan: typeof plans[0]) => {
     if (!user) {
-      navigate('/');
+      navigate('/auth');
       toast({
         title: "Authentication Required",
         description: "Please sign in to select a plan.",
