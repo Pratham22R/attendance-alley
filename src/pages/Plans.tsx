@@ -1,6 +1,7 @@
-
 import { Check } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
+import { useToast } from "@/components/ui/use-toast"
 
 const plans = [
   {
@@ -41,6 +42,21 @@ const plans = [
 
 const Plans = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const { toast } = useToast();
+
+  const handlePlanSelect = (plan: typeof plans[0]) => {
+    if (!user) {
+      navigate('/');
+      toast({
+        title: "Authentication Required",
+        description: "Please sign in to select a plan.",
+      });
+      return;
+    }
+    // Here you would typically integrate with a payment provider
+    navigate('/dashboard');
+  };
 
   return (
     <div className="min-h-screen bg-neutral-50 py-12">
@@ -69,7 +85,7 @@ const Plans = () => {
                 ))}
               </ul>
               <button
-                onClick={() => navigate('/dashboard')}
+                onClick={() => handlePlanSelect(plan)}
                 className={`w-full py-3 rounded-lg font-medium ${
                   plan.name === 'Pro'
                     ? 'bg-primary text-white hover:bg-primary-dark'
