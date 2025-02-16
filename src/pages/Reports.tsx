@@ -37,6 +37,7 @@ import {
 } from '@/components/ui/popover';
 import { format, subDays } from 'date-fns';
 import * as XLSX from 'xlsx';
+import { DateRange } from 'react-day-picker';
 
 const Reports = () => {
   const [dateRange, setDateRange] = useState<{
@@ -82,6 +83,12 @@ const Reports = () => {
     XLSX.writeFile(wb, 'attendance_report.xlsx');
   };
 
+  const handleDateRangeSelect = (range: DateRange | undefined) => {
+    if (range?.from && range?.to) {
+      setDateRange({ from: range.from, to: range.to });
+    }
+  };
+
   return (
     <div className="p-8 space-y-6">
       <div className="flex justify-between items-center">
@@ -97,15 +104,8 @@ const Reports = () => {
             <PopoverContent className="w-auto p-0" align="end">
               <Calendar
                 mode="range"
-                selected={{
-                  from: dateRange.from,
-                  to: dateRange.to,
-                }}
-                onSelect={(range) => {
-                  if (range?.from && range?.to) {
-                    setDateRange(range);
-                  }
-                }}
+                selected={dateRange}
+                onSelect={handleDateRangeSelect}
                 initialFocus
               />
             </PopoverContent>
@@ -129,7 +129,6 @@ const Reports = () => {
             </div>
           </CardContent>
         </Card>
-        {/* Add more summary cards as needed */}
       </div>
 
       <Card>
