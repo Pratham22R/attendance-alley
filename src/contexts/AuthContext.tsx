@@ -42,16 +42,28 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         email,
         password,
       });
-      if (error) throw error;
+      
+      if (error) {
+        if (error.message.includes('unique constraint')) {
+          throw new Error('An account with this email already exists.');
+        }
+        throw error;
+      }
+      
       toast({
         title: "Success!",
         description: "Please check your email for verification link.",
       });
       navigate('/dashboard');
     } catch (error: any) {
+      let errorMessage = error.message;
+      if (error.message.includes('Database error saving new user')) {
+        errorMessage = 'An account with this email already exists.';
+      }
+      
       toast({
         title: "Error",
-        description: error.message,
+        description: errorMessage,
         variant: "destructive",
       });
     }
