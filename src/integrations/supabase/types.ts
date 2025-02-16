@@ -51,6 +51,27 @@ export type Database = {
           },
         ]
       }
+      branches: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       email_notifications: {
         Row: {
           created_at: string
@@ -92,6 +113,7 @@ export type Database = {
       }
       students: {
         Row: {
+          branch_id: string | null
           created_at: string
           email: string | null
           first_name: string
@@ -101,6 +123,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          branch_id?: string | null
           created_at?: string
           email?: string | null
           first_name: string
@@ -110,6 +133,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          branch_id?: string | null
           created_at?: string
           email?: string | null
           first_name?: string
@@ -118,7 +142,15 @@ export type Database = {
           student_id?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "students_branch_id_fkey"
+            columns: ["branch_id"]
+            isOneToOne: false
+            referencedRelation: "branches"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
@@ -126,6 +158,7 @@ export type Database = {
         Row: {
           absent_count: number | null
           attendance_percentage: number | null
+          branch_name: string | null
           first_name: string | null
           last_name: string | null
           late_count: number | null

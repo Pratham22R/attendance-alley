@@ -12,6 +12,10 @@ import Dashboard from "./pages/Dashboard";
 import Plans from "./pages/Plans";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
+import Students from "./pages/Students";
+import Branches from "./pages/Branches";
+import AttendanceTracker from "./pages/AttendanceTracker";
+import Reports from "./pages/Reports";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +33,10 @@ const App = () => (
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/plans" element={<Plans />} />
                 <Route path="/auth" element={<Auth />} />
+                <Route path="/students" element={<Students />} />
+                <Route path="/branches" element={<Branches />} />
+                <Route path="/attendance" element={<AttendanceTracker />} />
+                <Route path="/reports" element={<Reports />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </AuthProvider>
