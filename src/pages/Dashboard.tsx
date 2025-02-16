@@ -1,13 +1,16 @@
+
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Download, Filter } from 'lucide-react';
+import { Download, Filter, Users, GraduationCap, Clock, PieChart } from 'lucide-react';
 import { NotificationDropdown } from "@/components/NotificationDropdown";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useNotifications } from "@/contexts/NotificationContext";
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
   const [showFilters, setShowFilters] = useState(false);
   const { addNotification } = useNotifications();
+  const navigate = useNavigate();
 
   const handleDownloadReport = () => {
     // Simulated download logic
@@ -24,9 +27,42 @@ const Dashboard = () => {
       <div className="flex h-screen">
         {/* Sidebar */}
         <div className="w-64 bg-card border-r">
-          <div className="p-4">
-            <h2 className="text-lg font-semibold">Dashboard</h2>
-            {/* Add sidebar navigation items here */}
+          <div className="p-4 space-y-4">
+            <h2 className="text-lg font-semibold">Quick Actions</h2>
+            <div className="space-y-2">
+              <Button 
+                variant="outline" 
+                className="w-full justify-start"
+                onClick={() => navigate('/students')}
+              >
+                <Users className="w-4 h-4 mr-2" />
+                Manage Students
+              </Button>
+              <Button 
+                variant="outline" 
+                className="w-full justify-start"
+                onClick={() => navigate('/branches')}
+              >
+                <GraduationCap className="w-4 h-4 mr-2" />
+                Manage Branches
+              </Button>
+              <Button 
+                variant="outline" 
+                className="w-full justify-start"
+                onClick={() => navigate('/attendance')}
+              >
+                <Clock className="w-4 h-4 mr-2" />
+                Take Attendance
+              </Button>
+              <Button 
+                variant="outline" 
+                className="w-full justify-start"
+                onClick={() => navigate('/reports')}
+              >
+                <PieChart className="w-4 h-4 mr-2" />
+                View Reports
+              </Button>
+            </div>
           </div>
         </div>
 

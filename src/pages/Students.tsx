@@ -19,8 +19,13 @@ import {
 import { StudentForm } from '@/components/StudentForm';
 import { StudentsTable } from '@/components/StudentsTable';
 import { useStudents } from '@/hooks/useStudents';
+import { ArrowLeft, RefreshCw } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 
 const Students = () => {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const {
     students,
     branches,
@@ -41,8 +46,24 @@ const Students = () => {
     <Layout>
       <div className="p-8">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold">Students</h1>
+          <div className="flex items-center gap-4">
+            <Button
+              variant="ghost"
+              onClick={() => navigate('/dashboard')}
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back to Dashboard
+            </Button>
+            <h1 className="text-2xl font-bold">Students</h1>
+          </div>
           <div className="flex gap-4">
+            <Button
+              variant="ghost"
+              onClick={() => queryClient.invalidateQueries({ queryKey: ['students'] })}
+            >
+              <RefreshCw className="w-4 h-4 mr-2" />
+              Refresh
+            </Button>
             <Select
               value={selectedBranchId}
               onValueChange={setSelectedBranchId}
