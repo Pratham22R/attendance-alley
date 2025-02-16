@@ -39,6 +39,52 @@ export type Database = {
             foreignKeyName: "attendance_student_id_fkey"
             columns: ["student_id"]
             isOneToOne: false
+            referencedRelation: "attendance_statistics"
+            referencedColumns: ["student_id"]
+          },
+          {
+            foreignKeyName: "attendance_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "students"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      email_notifications: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          notify_on_absent: boolean | null
+          student_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          notify_on_absent?: boolean | null
+          student_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          notify_on_absent?: boolean | null
+          student_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "email_notifications_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "attendance_statistics"
+            referencedColumns: ["student_id"]
+          },
+          {
+            foreignKeyName: "email_notifications_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
             referencedRelation: "students"
             referencedColumns: ["id"]
           },
@@ -76,10 +122,34 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      attendance_statistics: {
+        Row: {
+          absent_count: number | null
+          attendance_percentage: number | null
+          first_name: string | null
+          last_name: string | null
+          late_count: number | null
+          present_count: number | null
+          student_id: string | null
+          student_number: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
-      [_ in never]: never
+      get_attendance_by_date_range: {
+        Args: {
+          start_date: string
+          end_date: string
+        }
+        Returns: {
+          date: string
+          present_count: number
+          absent_count: number
+          late_count: number
+          total_students: number
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
