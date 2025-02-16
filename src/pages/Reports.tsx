@@ -40,10 +40,7 @@ import * as XLSX from 'xlsx';
 import { DateRange } from 'react-day-picker';
 
 const Reports = () => {
-  const [dateRange, setDateRange] = useState<{
-    from: Date;
-    to: Date;
-  }>({
+  const [dateRange, setDateRange] = useState<DateRange>({
     from: subDays(new Date(), 30),
     to: new Date(),
   });
@@ -64,6 +61,7 @@ const Reports = () => {
   const { data: attendanceByDate } = useQuery({
     queryKey: ['attendance-by-date', dateRange],
     queryFn: async () => {
+      if (!dateRange.from || !dateRange.to) return [];
       const { data, error } = await supabase
         .rpc('get_attendance_by_date_range', {
           start_date: format(dateRange.from, 'yyyy-MM-dd'),
@@ -83,12 +81,6 @@ const Reports = () => {
     XLSX.writeFile(wb, 'attendance_report.xlsx');
   };
 
-  const handleDateRangeSelect = (range: DateRange | undefined) => {
-    if (range?.from && range?.to) {
-      setDateRange({ from: range.from, to: range.to });
-    }
-  };
-
   return (
     <div className="p-8 space-y-6">
       <div className="flex justify-between items-center">
@@ -98,14 +90,14 @@ const Reports = () => {
             <PopoverTrigger asChild>
               <Button variant="outline">
                 <CalendarIcon className="mr-2 h-4 w-4" />
-                {format(dateRange.from, 'PP')} - {format(dateRange.to, 'PP')}
+                {dateRange.from ? format(dateRange.from, 'PP') : ''} - {dateRange.to ? format(dateRange.to, 'PP') : ''}
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0" align="end">
               <Calendar
                 mode="range"
                 selected={dateRange}
-                onSelect={handleDateRangeSelect}
+                onSelect={setDateRange}
                 initialFocus
               />
             </PopoverContent>
