@@ -23,6 +23,8 @@ import { ArrowLeft, RefreshCw } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 
+const ALL_BRANCHES = "all_branches";
+
 const Students = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -72,7 +74,7 @@ const Students = () => {
                 <SelectValue placeholder="Select Branch" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Branches</SelectItem>
+                <SelectItem value={ALL_BRANCHES}>All Branches</SelectItem>
                 {branches?.map((branch) => (
                   <SelectItem key={branch.id} value={branch.id}>
                     {branch.name}

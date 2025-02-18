@@ -6,9 +6,11 @@ import { useToast } from '@/hooks/use-toast';
 import { Student, Branch } from '@/types/student';
 import * as XLSX from 'xlsx';
 
+const ALL_BRANCHES = "all_branches";
+
 export function useStudents() {
   const [open, setOpen] = useState(false);
-  const [selectedBranchId, setSelectedBranchId] = useState<string>("");
+  const [selectedBranchId, setSelectedBranchId] = useState<string>(ALL_BRANCHES);
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -26,7 +28,7 @@ export function useStudents() {
     queryFn: async () => {
       let query = supabase.from('students').select('*, branches(name)');
       
-      if (selectedBranchId) {
+      if (selectedBranchId && selectedBranchId !== ALL_BRANCHES) {
         query = query.eq('branch_id', selectedBranchId);
       }
       
