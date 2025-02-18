@@ -14,7 +14,10 @@ export function useAttendance() {
   const { data: students, isLoading: isStudentsLoading } = useQuery({
     queryKey: ['students'],
     queryFn: async () => {
-      const { data, error } = await supabase.from('students').select('*');
+      const { data, error } = await supabase
+        .from('students')
+        .select('*, branches(name)')
+        .order('student_id', { ascending: true });
       if (error) throw error;
       return data;
     },
@@ -26,23 +29,43 @@ export function useAttendance() {
       const { data, error } = await supabase
         .from('attendance')
         .select('*')
-        .eq('date', format(date, 'yyyy-MM-dd'));
+        .eq('date', format(date, 'yyyy-MM-dd'))
+        .order('created_at', { ascending: false });
       if (error) throw error;
       return data;
     },
   });
 
   const addAttendance = useMutation({
-    mutationFn: async ({ studentId, status, date }: { 
+    mutationFn: async ({ 
+      studentId, 
+      status, 
+      date,
+      notes 
+    }: { 
       studentId: string; 
       status: 'present' | 'absent' | 'late'; 
-      date: Date 
+      date: Date;
+      notes?: string;
     }) => {
+      // Check if attendance already exists for this student on this date
+      const { data: existing } = await supabase
+        .from('attendance')
+        .select('id')
+        .eq('student_id', studentId)
+        .eq('date', format(date, 'yyyy-MM-dd'))
+        .single();
+
+      if (existing) {
+        throw new Error('Attendance already recorded for this student today');
+      }
+
       const { error } = await supabase.from('attendance').insert([
         {
           student_id: studentId,
           status,
           date: format(date, 'yyyy-MM-dd'),
+          notes,
         },
       ]);
       if (error) throw error;

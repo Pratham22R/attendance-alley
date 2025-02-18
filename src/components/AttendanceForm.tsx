@@ -9,6 +9,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
 import { Calendar } from '@/components/ui/calendar';
 import { format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
@@ -17,19 +18,55 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import { useToast } from '@/hooks/use-toast';
 
 interface AttendanceFormProps {
-  onSubmit: (data: { studentId: string; status: 'present' | 'absent' | 'late'; date: Date }) => void;
-  students?: Array<{ id: string; first_name: string; last_name: string }>;
+  onSubmit: (data: { 
+    studentId: string; 
+    status: 'present' | 'absent' | 'late'; 
+    date: Date;
+    notes?: string;
+  }) => void;
+  students?: Array<{ id: string; first_name: string; last_name: string; student_id: string }>;
+  onCancel?: () => void;
 }
 
-export function AttendanceForm({ onSubmit, students }: AttendanceFormProps) {
+export function AttendanceForm({ onSubmit, students, onCancel }: AttendanceFormProps) {
   const [selectedStudent, setSelectedStudent] = useState<string>('');
   const [status, setStatus] = useState<'present' | 'absent' | 'late'>('present');
   const [date, setDate] = useState<Date>(new Date());
+  const [notes, setNotes] = useState<string>('');
+  const { toast } = useToast();
+
+  const handleSubmit = () => {
+    if (!selectedStudent) {
+      toast({
+        title: "Error",
+        description: "Please select a student",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!status) {
+      toast({
+        title: "Error",
+        description: "Please select an attendance status",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    onSubmit({ 
+      studentId: selectedStudent, 
+      status, 
+      date,
+      notes: notes.trim() || undefined
+    });
+  };
 
   return (
-    <div className="space-y-4 p-4 border rounded-lg bg-card">
+    <div className="space-y-4 p-4">
       <div className="space-y-2">
         <Label>Student</Label>
         <Select value={selectedStudent} onValueChange={setSelectedStudent}>
@@ -39,7 +76,7 @@ export function AttendanceForm({ onSubmit, students }: AttendanceFormProps) {
           <SelectContent>
             {students?.map((student) => (
               <SelectItem key={student.id} value={student.id}>
-                {student.first_name} {student.last_name}
+                {student.student_id} - {student.first_name} {student.last_name}
               </SelectItem>
             ))}
           </SelectContent>
@@ -80,16 +117,30 @@ export function AttendanceForm({ onSubmit, students }: AttendanceFormProps) {
         </Popover>
       </div>
 
-      <Button 
-        className="w-full"
-        onClick={() => {
-          if (selectedStudent && status && date) {
-            onSubmit({ studentId: selectedStudent, status, date });
-          }
-        }}
-      >
-        Submit Attendance
-      </Button>
+      <div className="space-y-2">
+        <Label>Notes (Optional)</Label>
+        <Input
+          placeholder="Add any additional notes"
+          value={notes}
+          onChange={(e) => setNotes(e.target.value)}
+        />
+      </div>
+
+      <div className="flex gap-2 pt-4">
+        <Button 
+          className="flex-1"
+          variant="outline"
+          onClick={onCancel}
+        >
+          Cancel
+        </Button>
+        <Button 
+          className="flex-1"
+          onClick={handleSubmit}
+        >
+          Submit
+        </Button>
+      </div>
     </div>
   );
 }
