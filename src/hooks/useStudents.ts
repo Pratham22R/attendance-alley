@@ -11,6 +11,7 @@ const ALL_BRANCHES = "all_branches";
 export function useStudents() {
   const [open, setOpen] = useState(false);
   const [selectedBranchId, setSelectedBranchId] = useState<string>(ALL_BRANCHES);
+  const [searchTerm, setSearchTerm] = useState('');
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -24,12 +25,16 @@ export function useStudents() {
   });
 
   const { data: students, isLoading, isError } = useQuery({
-    queryKey: ['students', selectedBranchId],
+    queryKey: ['students', selectedBranchId, searchTerm],
     queryFn: async () => {
       let query = supabase.from('students').select('*, branches(name)');
       
       if (selectedBranchId && selectedBranchId !== ALL_BRANCHES) {
         query = query.eq('branch_id', selectedBranchId);
+      }
+      
+      if (searchTerm) {
+        query = query.or(`first_name.ilike.%${searchTerm}%,last_name.ilike.%${searchTerm}%,student_id.ilike.%${searchTerm}%,email.ilike.%${searchTerm}%`);
       }
       
       const { data, error } = await query;
@@ -103,6 +108,24 @@ export function useStudents() {
     reader.readAsArrayBuffer(file);
   };
 
+  const exportStudents = () => {
+    if (!students) return;
+
+    const workbook = XLSX.utils.book_new();
+    const worksheet = XLSX.utils.json_to_sheet(
+      students.map(student => ({
+        'Student ID': student.student_id,
+        'First Name': student.first_name,
+        'Last Name': student.last_name,
+        'Email': student.email,
+        'Branch': student.branches?.name,
+      }))
+    );
+
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Students');
+    XLSX.writeFile(workbook, 'students.xlsx');
+  };
+
   return {
     students,
     branches,
@@ -112,7 +135,10 @@ export function useStudents() {
     setOpen,
     selectedBranchId,
     setSelectedBranchId,
+    searchTerm,
+    setSearchTerm,
     addStudent,
     handleFileUpload,
+    exportStudents,
   };
 }
