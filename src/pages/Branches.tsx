@@ -22,6 +22,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { Label } from "@/components/ui/label";
+import { GitBranch } from "lucide-react";
 
 interface Branch {
   id: string;
@@ -83,24 +84,39 @@ export default function Branches() {
               <DialogHeader>
                 <DialogTitle>Add a new branch</DialogTitle>
               </DialogHeader>
-              <div className="grid gap-4 py-4">
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="name" className="text-right">
-                    Name
+              <div className="space-y-6 p-6 bg-white rounded-lg">
+                <div className="space-y-2">
+                  <Label htmlFor="name" className="text-sm font-medium flex items-center gap-2">
+                    <GitBranch className="w-4 h-4 text-primary" />
+                    Branch Name
                   </Label>
-                  <Input id="branch-name" className="col-span-3" />
+                  <Input 
+                    id="branch-name" 
+                    className="bg-white border-input hover:bg-gray-50 transition-colors" 
+                    placeholder="Enter branch name"
+                  />
+                </div>
+                <div className="flex gap-3 pt-2">
+                  <Button
+                    variant="outline"
+                    className="flex-1"
+                    onClick={() => setOpen(false)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    className="flex-1"
+                    onClick={() => {
+                      const name = (
+                        document.getElementById("branch-name") as HTMLInputElement
+                      ).value;
+                      addBranch.mutate(name);
+                    }}
+                  >
+                    Add Branch
+                  </Button>
                 </div>
               </div>
-              <Button
-                onClick={() => {
-                  const name = (
-                    document.getElementById("branch-name") as HTMLInputElement
-                  ).value;
-                  addBranch.mutate(name);
-                }}
-              >
-                Add Branch
-              </Button>
             </DialogContent>
           </Dialog>
         </div>
