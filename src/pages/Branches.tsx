@@ -22,7 +22,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { Label } from "@/components/ui/label";
-import { GitBranch } from "lucide-react";
+import { GitBranch, Plus } from "lucide-react";
 
 interface Branch {
   id: string;
@@ -78,38 +78,56 @@ export default function Branches() {
           <h1 className="text-2xl font-bold">Branches</h1>
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-              <Button>Add Branch</Button>
+              <Button className="gap-2">
+                <Plus className="h-4 w-4" />
+                Add Branch
+              </Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="sm:max-w-[425px]">
               <DialogHeader>
-                <DialogTitle>Add a new branch</DialogTitle>
+                <DialogTitle className="text-xl font-semibold">Add a new branch</DialogTitle>
               </DialogHeader>
-              <div className="space-y-6 p-6 bg-white rounded-lg">
-                <div className="space-y-2">
-                  <Label htmlFor="name" className="text-sm font-medium flex items-center gap-2">
+              <div className="mt-6 space-y-6 bg-white rounded-lg">
+                <div className="space-y-3">
+                  <Label 
+                    htmlFor="branch-name" 
+                    className="text-sm font-medium flex items-center gap-2 text-neutral-800"
+                  >
                     <GitBranch className="w-4 h-4 text-primary" />
                     Branch Name
                   </Label>
                   <Input 
                     id="branch-name" 
-                    className="bg-white border-input hover:bg-gray-50 transition-colors" 
+                    className="bg-white border-input hover:bg-gray-50 transition-colors h-11" 
                     placeholder="Enter branch name"
                   />
                 </div>
-                <div className="flex gap-3 pt-2">
+                <div className="flex gap-3 pt-4">
                   <Button
                     variant="outline"
-                    className="flex-1"
-                    onClick={() => setOpen(false)}
+                    className="flex-1 h-11"
+                    onClick={() => {
+                      const input = document.getElementById("branch-name") as HTMLInputElement;
+                      if (input) input.value = "";
+                      setOpen(false);
+                    }}
                   >
                     Cancel
                   </Button>
                   <Button
-                    className="flex-1"
+                    className="flex-1 bg-primary hover:bg-primary/90 h-11"
                     onClick={() => {
                       const name = (
                         document.getElementById("branch-name") as HTMLInputElement
                       ).value;
+                      if (!name.trim()) {
+                        toast({
+                          title: "Error",
+                          description: "Please enter a branch name",
+                          variant: "destructive",
+                        });
+                        return;
+                      }
                       addBranch.mutate(name);
                     }}
                   >
@@ -121,24 +139,26 @@ export default function Branches() {
           </Dialog>
         </div>
 
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Created At</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {branches?.map((branch) => (
-              <TableRow key={branch.id}>
-                <TableCell>{branch.name}</TableCell>
-                <TableCell>
-                  {new Date(branch.created_at).toLocaleDateString()}
-                </TableCell>
+        <div className="bg-white rounded-lg border shadow-sm">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="font-semibold">Name</TableHead>
+                <TableHead className="font-semibold">Created At</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {branches?.map((branch) => (
+                <TableRow key={branch.id}>
+                  <TableCell>{branch.name}</TableCell>
+                  <TableCell>
+                    {new Date(branch.created_at).toLocaleDateString()}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       </div>
     </Layout>
   );
