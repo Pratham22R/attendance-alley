@@ -68,9 +68,9 @@ export function AttendanceForm({ onSubmit, students, onCancel }: AttendanceFormP
   return (
     <div className="space-y-4 p-4">
       <div className="space-y-2">
-        <Label>Student</Label>
+        <Label className="text-sm font-medium">Student</Label>
         <Select value={selectedStudent} onValueChange={setSelectedStudent}>
-          <SelectTrigger>
+          <SelectTrigger className="w-full">
             <SelectValue placeholder="Select student" />
           </SelectTrigger>
           <SelectContent>
@@ -84,9 +84,9 @@ export function AttendanceForm({ onSubmit, students, onCancel }: AttendanceFormP
       </div>
 
       <div className="space-y-2">
-        <Label>Status</Label>
+        <Label className="text-sm font-medium">Status</Label>
         <Select value={status} onValueChange={(value: 'present' | 'absent' | 'late') => setStatus(value)}>
-          <SelectTrigger>
+          <SelectTrigger className="w-full">
             <SelectValue placeholder="Select status" />
           </SelectTrigger>
           <SelectContent>
@@ -98,7 +98,7 @@ export function AttendanceForm({ onSubmit, students, onCancel }: AttendanceFormP
       </div>
 
       <div className="space-y-2">
-        <Label>Date</Label>
+        <Label className="text-sm font-medium">Date</Label>
         <Popover>
           <PopoverTrigger asChild>
             <Button variant="outline" className="w-full justify-start text-left font-normal">
@@ -118,7 +118,7 @@ export function AttendanceForm({ onSubmit, students, onCancel }: AttendanceFormP
       </div>
 
       <div className="space-y-2">
-        <Label>Notes (Optional)</Label>
+        <Label className="text-sm font-medium">Notes (Optional)</Label>
         <Input
           placeholder="Add any additional notes"
           value={notes}
