@@ -73,72 +73,91 @@ export default function Branches() {
 
   return (
     <Layout>
-      <div className="p-8">
+      <div className="p-8 bg-white min-h-screen">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold">Branches</h1>
+          <h1 className="text-2xl font-bold text-gray-800">Branches</h1>
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-              <Button>Add Branch</Button>
+              <Button className="bg-primary hover:bg-primary/90">Add Branch</Button>
             </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Add a new branch</DialogTitle>
+            <DialogContent className="bg-white p-0">
+              <DialogHeader className="px-6 pt-6 pb-2">
+                <DialogTitle className="text-xl font-semibold text-gray-800">Add a new branch</DialogTitle>
               </DialogHeader>
-              <div className="space-y-6 p-6 bg-white rounded-lg">
-                <div className="space-y-2">
-                  <Label htmlFor="name" className="text-sm font-medium flex items-center gap-2">
-                    <GitBranch className="w-4 h-4 text-primary" />
-                    Branch Name
-                  </Label>
-                  <Input 
-                    id="branch-name" 
-                    className="bg-white border-input hover:bg-gray-50 transition-colors" 
-                    placeholder="Enter branch name"
-                  />
-                </div>
-                <div className="flex gap-3 pt-2">
-                  <Button
-                    variant="outline"
-                    className="flex-1"
-                    onClick={() => setOpen(false)}
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    className="flex-1"
-                    onClick={() => {
-                      const name = (
-                        document.getElementById("branch-name") as HTMLInputElement
-                      ).value;
-                      addBranch.mutate(name);
-                    }}
-                  >
-                    Add Branch
-                  </Button>
+              <div className="px-6 pb-6">
+                <div className="space-y-4 pt-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="branch-name" className="text-sm font-medium flex items-center gap-2 text-gray-700">
+                      <GitBranch className="w-4 h-4 text-primary" />
+                      Branch Name
+                    </Label>
+                    <Input 
+                      id="branch-name" 
+                      className="bg-white border-gray-200 focus:border-primary focus:ring-primary h-10" 
+                      placeholder="Enter branch name"
+                    />
+                  </div>
+                  <div className="flex gap-3 pt-4">
+                    <Button
+                      variant="outline"
+                      className="flex-1"
+                      onClick={() => setOpen(false)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      className="flex-1 bg-primary hover:bg-primary/90"
+                      onClick={() => {
+                        const name = (
+                          document.getElementById("branch-name") as HTMLInputElement
+                        ).value;
+                        if (!name.trim()) {
+                          toast({
+                            title: "Error",
+                            description: "Please enter a branch name",
+                            variant: "destructive",
+                          });
+                          return;
+                        }
+                        addBranch.mutate(name);
+                      }}
+                    >
+                      Add Branch
+                    </Button>
+                  </div>
                 </div>
               </div>
             </DialogContent>
           </Dialog>
         </div>
 
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Created At</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {branches?.map((branch) => (
-              <TableRow key={branch.id}>
-                <TableCell>{branch.name}</TableCell>
-                <TableCell>
-                  {new Date(branch.created_at).toLocaleDateString()}
-                </TableCell>
+        <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
+          <Table>
+            <TableHeader>
+              <TableRow className="bg-gray-50">
+                <TableHead className="font-semibold text-gray-700">Name</TableHead>
+                <TableHead className="font-semibold text-gray-700">Created At</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {branches?.map((branch) => (
+                <TableRow key={branch.id} className="hover:bg-gray-50">
+                  <TableCell className="font-medium text-gray-900">{branch.name}</TableCell>
+                  <TableCell className="text-gray-600">
+                    {new Date(branch.created_at).toLocaleDateString()}
+                  </TableCell>
+                </TableRow>
+              ))}
+              {branches?.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={2} className="text-center py-8 text-gray-500">
+                    No branches found
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
       </div>
     </Layout>
   );
