@@ -25,10 +25,10 @@ interface StudentFormProps {
 
 export function StudentForm({ branches, onSubmit }: StudentFormProps) {
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 bg-white p-6 rounded-lg text-black">
       <div className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="student_id" className="text-sm font-medium flex items-center gap-2 text-gray-700">
+          <Label htmlFor="student_id" className="text-sm font-medium flex items-center gap-2">
             <IdCard className="w-4 h-4 text-primary" />
             Student ID
           </Label>
@@ -40,7 +40,7 @@ export function StudentForm({ branches, onSubmit }: StudentFormProps) {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="first_name" className="text-sm font-medium flex items-center gap-2 text-gray-700">
+          <Label htmlFor="first_name" className="text-sm font-medium flex items-center gap-2">
             <UserCircle className="w-4 h-4 text-primary" />
             First Name
           </Label>
@@ -52,7 +52,7 @@ export function StudentForm({ branches, onSubmit }: StudentFormProps) {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="last_name" className="text-sm font-medium flex items-center gap-2 text-gray-700">
+          <Label htmlFor="last_name" className="text-sm font-medium flex items-center gap-2">
             <UserCircle className="w-4 h-4 text-primary" />
             Last Name
           </Label>
@@ -64,7 +64,7 @@ export function StudentForm({ branches, onSubmit }: StudentFormProps) {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="email" className="text-sm font-medium flex items-center gap-2 text-gray-700">
+          <Label htmlFor="email" className="text-sm font-medium flex items-center gap-2">
             <Mail className="w-4 h-4 text-primary" />
             Email
           </Label>
@@ -77,7 +77,7 @@ export function StudentForm({ branches, onSubmit }: StudentFormProps) {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="branch" className="text-sm font-medium flex items-center gap-2 text-gray-700">
+          <Label htmlFor="branch" className="text-sm font-medium flex items-center gap-2">
             <School className="w-4 h-4 text-primary" />
             Branch
           </Label>
@@ -111,7 +111,7 @@ export function StudentForm({ branches, onSubmit }: StudentFormProps) {
       <div className="flex gap-3 pt-2">
         <Button 
           variant="outline"
-          className="flex-1 border-gray-200 hover:bg-gray-50"
+          className="flex-1 bg-white border-gray-200 hover:bg-gray-50"
           onClick={() => {
             const form = document.querySelector('form');
             if (form) form.reset();
@@ -120,7 +120,7 @@ export function StudentForm({ branches, onSubmit }: StudentFormProps) {
           Cancel
         </Button>
         <Button 
-          className="flex-1 bg-primary hover:bg-primary/90"
+          className="flex-1 bg-primary hover:bg-primary/90 text-white"
           onClick={() => {
             const student_id = (document.getElementById('student_id') as HTMLInputElement).value;
             const first_name = (document.getElementById('first_name') as HTMLInputElement).value;
