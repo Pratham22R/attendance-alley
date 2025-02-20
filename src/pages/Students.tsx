@@ -19,14 +19,12 @@ import {
 import { StudentForm } from '@/components/StudentForm';
 import { StudentsTable } from '@/components/StudentsTable';
 import { useStudents } from '@/hooks/useStudents';
-import { ArrowLeft, Download, RefreshCw, Search, Upload, UserPlus } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Download, RefreshCw, Search, Upload, UserPlus } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
 
 const ALL_BRANCHES = "all_branches";
 
 const Students = () => {
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const {
     students,
@@ -79,18 +77,9 @@ const Students = () => {
 
   return (
     <Layout>
-      <div className="p-8">
-        <div className="flex justify-between items-center mb-6">
-          <div className="flex items-center gap-4">
-            <Button
-              variant="ghost"
-              onClick={() => navigate('/dashboard')}
-            >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Dashboard
-            </Button>
-            <h1 className="text-2xl font-bold">Students</h1>
-          </div>
+      <div className="space-y-6">
+        <div className="flex justify-between items-center">
+          <h1 className="text-2xl font-bold">Students</h1>
           <div className="flex gap-4">
             <div className="flex gap-2">
               <Input
