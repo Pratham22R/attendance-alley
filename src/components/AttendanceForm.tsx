@@ -19,7 +19,6 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { useToast } from '@/hooks/use-toast';
-import { cn } from '@/lib/utils';
 
 interface AttendanceFormProps {
   onSubmit: (data: { 
@@ -49,15 +48,6 @@ export function AttendanceForm({ onSubmit, students, onCancel }: AttendanceFormP
       return;
     }
 
-    if (!status) {
-      toast({
-        title: "Error",
-        description: "Please select an attendance status",
-        variant: "destructive",
-      });
-      return;
-    }
-
     onSubmit({ 
       studentId: selectedStudent, 
       status, 
@@ -67,15 +57,15 @@ export function AttendanceForm({ onSubmit, students, onCancel }: AttendanceFormP
   };
 
   return (
-    <div className="space-y-6 p-6 bg-white rounded-lg shadow-sm">
+    <div className="space-y-6">
       <div className="space-y-4">
         <div className="space-y-2">
-          <Label className="text-sm font-medium flex items-center gap-2">
+          <Label className="text-sm font-medium flex items-center gap-2 text-gray-700">
             <UserCircle className="w-4 h-4 text-primary" />
             Student
           </Label>
           <Select value={selectedStudent} onValueChange={setSelectedStudent}>
-            <SelectTrigger className="w-full bg-white border-input hover:bg-gray-50 transition-colors">
+            <SelectTrigger className="w-full bg-white border-gray-200 focus:border-primary focus:ring-primary h-10">
               <SelectValue placeholder="Select a student" />
             </SelectTrigger>
             <SelectContent>
@@ -93,7 +83,7 @@ export function AttendanceForm({ onSubmit, students, onCancel }: AttendanceFormP
         </div>
 
         <div className="space-y-2">
-          <Label className="text-sm font-medium flex items-center gap-2">
+          <Label className="text-sm font-medium flex items-center gap-2 text-gray-700">
             <Clock className="w-4 h-4 text-primary" />
             Status
           </Label>
@@ -103,10 +93,9 @@ export function AttendanceForm({ onSubmit, students, onCancel }: AttendanceFormP
                 key={value}
                 type="button"
                 variant={status === value ? 'default' : 'outline'}
-                className={cn(
-                  'capitalize',
-                  status === value && 'bg-primary text-white hover:bg-primary/90'
-                )}
+                className={`capitalize ${
+                  status === value ? 'bg-primary hover:bg-primary/90 text-white' : 'border-gray-200 hover:bg-gray-50'
+                }`}
                 onClick={() => setStatus(value as 'present' | 'absent' | 'late')}
               >
                 {value}
@@ -116,7 +105,7 @@ export function AttendanceForm({ onSubmit, students, onCancel }: AttendanceFormP
         </div>
 
         <div className="space-y-2">
-          <Label className="text-sm font-medium flex items-center gap-2">
+          <Label className="text-sm font-medium flex items-center gap-2 text-gray-700">
             <CalendarIcon className="w-4 h-4 text-primary" />
             Date
           </Label>
@@ -124,9 +113,9 @@ export function AttendanceForm({ onSubmit, students, onCancel }: AttendanceFormP
             <PopoverTrigger asChild>
               <Button
                 variant="outline"
-                className="w-full justify-start text-left font-normal bg-white hover:bg-gray-50 transition-colors"
+                className="w-full justify-start text-left font-normal bg-white border-gray-200 hover:bg-gray-50 h-10"
               >
-                <CalendarIcon className="mr-2 h-4 w-4" />
+                <CalendarIcon className="mr-2 h-4 w-4 text-primary" />
                 {date ? format(date, 'PPP') : <span>Pick a date</span>}
               </Button>
             </PopoverTrigger>
@@ -143,32 +132,32 @@ export function AttendanceForm({ onSubmit, students, onCancel }: AttendanceFormP
         </div>
 
         <div className="space-y-2">
-          <Label className="text-sm font-medium flex items-center gap-2">
+          <Label className="text-sm font-medium flex items-center gap-2 text-gray-700">
             <Pencil className="w-4 h-4 text-primary" />
             Notes (Optional)
           </Label>
           <Input
-            placeholder="Add any additional notes"
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-            className="bg-white border-input hover:bg-gray-50 transition-colors"
+            placeholder="Add any additional notes"
+            className="bg-white border-gray-200 focus:border-primary focus:ring-primary h-10"
           />
         </div>
       </div>
 
       <div className="flex gap-3 pt-2">
         <Button 
-          className="flex-1"
           variant="outline"
+          className="flex-1 border-gray-200 hover:bg-gray-50"
           onClick={onCancel}
         >
           Cancel
         </Button>
         <Button 
-          className="flex-1"
+          className="flex-1 bg-primary hover:bg-primary/90"
           onClick={handleSubmit}
         >
-          Submit
+          Take Attendance
         </Button>
       </div>
     </div>

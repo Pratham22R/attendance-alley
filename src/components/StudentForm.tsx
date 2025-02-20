@@ -25,46 +25,46 @@ interface StudentFormProps {
 
 export function StudentForm({ branches, onSubmit }: StudentFormProps) {
   return (
-    <div className="space-y-6 p-6 bg-white rounded-lg">
+    <div className="space-y-6">
       <div className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="student_id" className="text-sm font-medium flex items-center gap-2">
+          <Label htmlFor="student_id" className="text-sm font-medium flex items-center gap-2 text-gray-700">
             <IdCard className="w-4 h-4 text-primary" />
             Student ID
           </Label>
           <Input
             id="student_id"
             placeholder="Enter student ID"
-            className="bg-white border-input hover:bg-gray-50 transition-colors"
+            className="bg-white border-gray-200 focus:border-primary focus:ring-primary h-10"
           />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="first_name" className="text-sm font-medium flex items-center gap-2">
+          <Label htmlFor="first_name" className="text-sm font-medium flex items-center gap-2 text-gray-700">
             <UserCircle className="w-4 h-4 text-primary" />
             First Name
           </Label>
           <Input
             id="first_name"
             placeholder="Enter first name"
-            className="bg-white border-input hover:bg-gray-50 transition-colors"
+            className="bg-white border-gray-200 focus:border-primary focus:ring-primary h-10"
           />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="last_name" className="text-sm font-medium flex items-center gap-2">
+          <Label htmlFor="last_name" className="text-sm font-medium flex items-center gap-2 text-gray-700">
             <UserCircle className="w-4 h-4 text-primary" />
             Last Name
           </Label>
           <Input
             id="last_name"
             placeholder="Enter last name"
-            className="bg-white border-input hover:bg-gray-50 transition-colors"
+            className="bg-white border-gray-200 focus:border-primary focus:ring-primary h-10"
           />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="email" className="text-sm font-medium flex items-center gap-2">
+          <Label htmlFor="email" className="text-sm font-medium flex items-center gap-2 text-gray-700">
             <Mail className="w-4 h-4 text-primary" />
             Email
           </Label>
@@ -72,12 +72,12 @@ export function StudentForm({ branches, onSubmit }: StudentFormProps) {
             type="email"
             id="email"
             placeholder="Enter email address"
-            className="bg-white border-input hover:bg-gray-50 transition-colors"
+            className="bg-white border-gray-200 focus:border-primary focus:ring-primary h-10"
           />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="branch" className="text-sm font-medium flex items-center gap-2">
+          <Label htmlFor="branch" className="text-sm font-medium flex items-center gap-2 text-gray-700">
             <School className="w-4 h-4 text-primary" />
             Branch
           </Label>
@@ -90,7 +90,7 @@ export function StudentForm({ branches, onSubmit }: StudentFormProps) {
               document.body.appendChild(input);
             }}
           >
-            <SelectTrigger className="w-full bg-white border-input hover:bg-gray-50 transition-colors">
+            <SelectTrigger className="w-full bg-white border-gray-200 focus:border-primary focus:ring-primary h-10">
               <SelectValue placeholder="Select Branch" />
             </SelectTrigger>
             <SelectContent>
@@ -110,18 +110,17 @@ export function StudentForm({ branches, onSubmit }: StudentFormProps) {
 
       <div className="flex gap-3 pt-2">
         <Button 
-          variant="outline" 
-          className="flex-1"
+          variant="outline"
+          className="flex-1 border-gray-200 hover:bg-gray-50"
           onClick={() => {
-            // Clear form
             const form = document.querySelector('form');
             if (form) form.reset();
           }}
         >
-          Clear
+          Cancel
         </Button>
         <Button 
-          className="flex-1"
+          className="flex-1 bg-primary hover:bg-primary/90"
           onClick={() => {
             const student_id = (document.getElementById('student_id') as HTMLInputElement).value;
             const first_name = (document.getElementById('first_name') as HTMLInputElement).value;
