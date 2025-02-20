@@ -57,10 +57,10 @@ export function AttendanceForm({ onSubmit, students, onCancel }: AttendanceFormP
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 bg-white p-6 rounded-lg text-black">
       <div className="space-y-4">
         <div className="space-y-2">
-          <Label className="text-sm font-medium flex items-center gap-2 text-gray-700">
+          <Label className="text-sm font-medium flex items-center gap-2">
             <UserCircle className="w-4 h-4 text-primary" />
             Student
           </Label>
@@ -83,7 +83,7 @@ export function AttendanceForm({ onSubmit, students, onCancel }: AttendanceFormP
         </div>
 
         <div className="space-y-2">
-          <Label className="text-sm font-medium flex items-center gap-2 text-gray-700">
+          <Label className="text-sm font-medium flex items-center gap-2">
             <Clock className="w-4 h-4 text-primary" />
             Status
           </Label>
@@ -94,7 +94,7 @@ export function AttendanceForm({ onSubmit, students, onCancel }: AttendanceFormP
                 type="button"
                 variant={status === value ? 'default' : 'outline'}
                 className={`capitalize ${
-                  status === value ? 'bg-primary hover:bg-primary/90 text-white' : 'border-gray-200 hover:bg-gray-50'
+                  status === value ? 'bg-primary hover:bg-primary/90 text-white' : 'bg-white border-gray-200 hover:bg-gray-50'
                 }`}
                 onClick={() => setStatus(value as 'present' | 'absent' | 'late')}
               >
@@ -105,7 +105,7 @@ export function AttendanceForm({ onSubmit, students, onCancel }: AttendanceFormP
         </div>
 
         <div className="space-y-2">
-          <Label className="text-sm font-medium flex items-center gap-2 text-gray-700">
+          <Label className="text-sm font-medium flex items-center gap-2">
             <CalendarIcon className="w-4 h-4 text-primary" />
             Date
           </Label>
@@ -125,14 +125,14 @@ export function AttendanceForm({ onSubmit, students, onCancel }: AttendanceFormP
                 selected={date}
                 onSelect={(date) => date && setDate(date)}
                 initialFocus
-                className="rounded-md border"
+                className="rounded-md border bg-white"
               />
             </PopoverContent>
           </Popover>
         </div>
 
         <div className="space-y-2">
-          <Label className="text-sm font-medium flex items-center gap-2 text-gray-700">
+          <Label className="text-sm font-medium flex items-center gap-2">
             <Pencil className="w-4 h-4 text-primary" />
             Notes (Optional)
           </Label>
@@ -148,13 +148,13 @@ export function AttendanceForm({ onSubmit, students, onCancel }: AttendanceFormP
       <div className="flex gap-3 pt-2">
         <Button 
           variant="outline"
-          className="flex-1 border-gray-200 hover:bg-gray-50"
+          className="flex-1 bg-white border-gray-200 hover:bg-gray-50"
           onClick={onCancel}
         >
           Cancel
         </Button>
         <Button 
-          className="flex-1 bg-primary hover:bg-primary/90"
+          className="flex-1 bg-primary hover:bg-primary/90 text-white"
           onClick={handleSubmit}
         >
           Take Attendance
